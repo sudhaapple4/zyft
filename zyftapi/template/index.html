@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Data List</title>
+</head>
+<body>
+    <h1>Search and Filter Data</h1>
+
+    <input type="text" name="query" id="searchField" placeholder="Search by name">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Id</th>
+        </tr>
+        {% for item in data_list %}
+        <tr>
+            <td>{{ item.title }}</td>
+            <td>{{ item.id }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the search field
+            const searchField = document.getElementById('searchField');
+            console.log('searchField  ',searchField)
+
+            // Function to update the table with filtered data
+            function filterData() {
+                const searchTermLower = searchField.value.toLowerCase();
+                const rows = document.querySelectorAll('table tr:not(:first-child)');
+
+                rows.forEach((row) => {
+                    const titleLower = row.cells[0].innerText.toLowerCase();
+                    row.style.display =(titleLower.startsWith(searchTermLower.charAt(0)) 
+                    && titleLower.endsWith(searchTermLower.charAt(searchTermLower.length - 1))
+                    ) 
+                    //|| titleLower.includes(searchTermLower) 
+                    ||(titleLower.startsWith(searchTermLower.charAt(0)))
+                    ||(//titleLower.startsWith(searchTermLower.charAt(0)) ||
+                    titleLower.endsWith(searchTermLower.charAt(searchTermLower.length - 1)))
+                    ? '' : 'none';                 
+                });
+            }
+
+            // Attach event listener to the search field
+            searchField.addEventListener('input', filterData);
+        });
+    </script>
+</body>
+</html>
